@@ -33,7 +33,7 @@ object UserLogin {
     }
     val sparkContext: SparkContext = new SparkContext(sparkConf)
     sparkContext.setLogLevel("WARN")
-    val file: RDD[String] = sparkContext.textFile(hdfsPath+getPreviousDateStr())
+    val file: RDD[String] = sparkContext.textFile(hdfsPath)
     val loginData: RDD[BuryLogin] = file.filter(line => {
       StringUtils.isNotBlank(line)
     })
