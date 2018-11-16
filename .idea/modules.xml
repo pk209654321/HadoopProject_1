@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HIveUDF/HIveUDF.iml" filepath="$PROJECT_DIR$/HIveUDF/HIveUDF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HadoopMr/HadoopMr.iml" filepath="$PROJECT_DIR$/HadoopMr/HadoopMr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HadoopProject.iml" filepath="$PROJECT_DIR$/HadoopProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HadoopSpark/HadoopSpark.iml" filepath="$PROJECT_DIR$/HadoopSpark/HadoopSpark.iml" />
+    </modules>
+  </component>
+</project>
