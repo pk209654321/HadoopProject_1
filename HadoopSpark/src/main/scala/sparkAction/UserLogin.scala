@@ -33,20 +33,16 @@ object UserLogin {
     }
     val sparkContext: SparkContext = new SparkContext(sparkConf)
     sparkContext.setLogLevel("WARN")
-    val file: RDD[String] = sparkContext.textFile(hdfsPath)
+    val file: RDD[String] = sparkContext.textFile(hdfsPath+"18-11-13")
     val loginData: RDD[BuryLogin] = file.filter(line => {
       StringUtils.isNotBlank(line)
     })
       .map(line => {
-        try {
           val all: String = line.replaceAll("\\\\\"", "\"").replaceAll("\\\\\\\\u003d", "=")
           val parseObject: BuryLogin = JSON.parseObject(all, classOf[BuryLogin])
           parseObject
-        } catch {
-          case e: Exception => null
-        }
       })
-      .filter(_ != null)
+      .filter(_.line!= null)
       .filter(_.logType == 1)
       .filter(one => {
         //访问日志
@@ -72,15 +68,18 @@ object UserLogin {
           if (splitEQ.length > 1) {
             //map.put(splitEQ(0), splitEQ(1))
             //println(map.toBuffer)
-            if (splitEQ(0) == "access_time") {
+            val key: String = splitEQ(0).trim
+            val value: String = splitEQ(1).trim
+            if (key == "access_time") {
               //得到登录时间
-              if(StringUtils.isNotEmpty(splitEQ(1))){
-                val time: String = DateScalaUtil.tranTimeToString(splitEQ(1),0)
+              if(StringUtils.isNotBlank(value)){
+                val time: String = DateScalaUtil.tranTimeToString(value,0)
+                println(splitEQ(1)+"------"+time)
                 time_login = time
               }
             }
-            if(splitEQ(0)=="user_id"&&StringUtils.isNotEmpty(splitEQ(0))){
-              user_id=splitEQ(1).toInt
+            if(key=="user_id"&&StringUtils.isNotBlank(value)){
+              user_id=value.toInt
             }
           }
         }

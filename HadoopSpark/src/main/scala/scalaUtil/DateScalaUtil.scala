@@ -64,6 +64,12 @@ object DateScalaUtil {
     instance.getTime
   }
 
+  def getPreviousDateStr(offset:Int,timeType:Int): String ={
+    val nextDate: Date = DateScalaUtil.getNextDate(new Date(),offset)
+    val string: String = DateScalaUtil.date2String(nextDate,timeType)
+    string
+  }
+
 
   def main(args: Array[String]): Unit = {
 //    val nextDate: Date = getNextDate(new Date(),-1)

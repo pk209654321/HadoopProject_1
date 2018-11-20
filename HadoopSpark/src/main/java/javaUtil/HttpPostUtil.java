@@ -1,7 +1,6 @@
 package javaUtil;/**
  * Created by lenovo on 2018/10/26.
  */
-import bean.UserLoginStr;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.IOUtils;
 
@@ -64,8 +63,8 @@ public class HttpPostUtil {
         }
     }
 
-    public synchronized static void sendMessage(UserLoginStr userLoginStr, String urlstr){
-        String toJSONString = JSON.toJSONString(userLoginStr);
+    public synchronized static void sendMessage(Object t, String urlstr){
+        String toJSONString = JSON.toJSONString(t);
         HttpPostUtil.doHttpPost(toJSONString,urlstr);
     }
 }
