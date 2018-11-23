@@ -1,4 +1,4 @@
-package javaUtil;/**
+package scalaUtil;/**
  * Created by lenovo on 2018/10/30.
  */
 

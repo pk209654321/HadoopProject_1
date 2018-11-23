@@ -1,7 +1,6 @@
 package sparkAction
 
 import java.util.Date
-import javaUtil.{HttpPostUtil, LocalOrLine}
 
 import bean.{UserLoginStr, Data}
 import com.alibaba.fastjson.JSON
@@ -11,7 +10,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkContext, SparkConf}
 
 import scala.collection.mutable
-import scalaUtil.DateScalaUtil
+import scalaUtil.{LocalOrLine, HttpPostUtil, DateScalaUtil}
 
 /**
   * Created by lenovo on 2018/10/25.

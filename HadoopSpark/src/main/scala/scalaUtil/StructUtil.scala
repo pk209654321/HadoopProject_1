@@ -59,4 +59,26 @@ object StructUtil {
     StructField("order_num",StringType),
     StructField("activity_id",StringType)
   ))
+
+  val structVisit=StructType(List(StructField("user_id",IntegerType),
+    StructField("guid",StringType),
+    StructField("access_time",LongType),
+    StructField("offline_time",LongType),
+    StructField("download_channel",StringType),
+    StructField("client_version",StringType),
+    StructField("phone_model",StringType),
+    StructField("phone_system",StringType),
+    StructField("system_version",StringType),
+    StructField("operator",StringType),
+    StructField("network",StringType),
+    StructField("resolution",StringType),
+    StructField("screen_height",StringType),
+    StructField("screen_width",StringType),
+    StructField("mac",StringType),
+    StructField("ip",StringType),
+    StructField("imei",StringType),
+    StructField("iccid",StringType),
+    StructField("meid",StringType),
+    StructField("idfa",StringType)
+  ))
 }

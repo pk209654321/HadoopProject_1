@@ -14,20 +14,33 @@ import scala.io.Source
   */
 object Test {
   def main(args: Array[String]): Unit = {
-    val person: Person = new Person("wangyd",1)
-    println(person.age)
-    val string: String = JSON.toJSONString(person,SerializerFeature.PrettyFormat)
-    println(string)
   }
 }
 
-class Person(var name:String,var age:Int) {
-  println("constructing Person .......")
-  override def toString=name+".........."+age
+class Student(var name:String,var age:Int){
+  private var sex:Int=0
+  //直接访问半生对象的私有成员
+  def printCompanionObject()= println(Student.studentNo)
 }
 
+object Student{
+  private var studentNo:Int=0;
+  def uniqueStudentNo()={
+    studentNo+=1
+    studentNo
+  }
 
+  def apply(name:String,age:Int)=new Student(name,age)
 
+  def main(args: Array[String]) {
+    println(Student.uniqueStudentNo())
+    val student: Student = new Student("wang",1)
+    //直接访问半生类student中的私有成员
+    println(student.sex)
+    val student1: Student = Student("john",29)
+    println(student1.name)
+  }
+}
 
 
 

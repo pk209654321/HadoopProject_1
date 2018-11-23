@@ -15,7 +15,7 @@ import scalaUtil.{DateScalaUtil, StructUtil}
   *
   */
 object BuryClientTable {
-  def cleanClientData(filterClient: RDD[BuryLogin],hc: HiveContext) ={
+  def cleanClientData(filterClient: RDD[BuryLogin],hc: HiveContext,diffDay:Int) ={
     val map: RDD[Row] = filterClient.map(one => {
       val line = one.line
       val split = line.split("\\|")
@@ -83,7 +83,7 @@ object BuryClientTable {
     //println(createDataFrame.count())
     createDataFrame.registerTempTable("StockShopClient")
     //val timeStr=DateScalaUtil.date2String(new Date,1)
-    val timeStr: String = DateScalaUtil.getPreviousDateStr(-1,1)
+    val timeStr: String = DateScalaUtil.getPreviousDateStr(diffDay,1)
     val hql=
       s"""
          insert overwrite table wangyadong.t_client_user_behavior partition(hp_stat_date='${timeStr}') select * from StockShopClient
