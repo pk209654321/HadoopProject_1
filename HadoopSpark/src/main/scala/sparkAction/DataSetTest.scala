@@ -9,9 +9,5 @@ import org.apache.spark.sql.hive.HiveContext
   */
 object DataSetTest {
   def main(args: Array[String]) {
-    val conf: SparkConf = new SparkConf().setAppName("DataSetTest").setMaster("local[*]")
-    val context: SparkContext = new SparkContext(conf)
-    val hc: HiveContext = new HiveContext(context)
-    val sqlContext: SQLContext = new SQLContext(context)
   }
 }

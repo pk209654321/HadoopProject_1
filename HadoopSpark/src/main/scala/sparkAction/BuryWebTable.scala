@@ -3,6 +3,7 @@ package sparkAction
 import java.util.Date
 
 import bean.{StockShopWeb, StockShopClient}
+import conf.ConfigurationManager
 import org.apache.commons.lang3.StringUtils
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row}
@@ -14,6 +15,7 @@ import scalaUtil.{DateScalaUtil, StructUtil}
   * Created by lenovo on 2018/11/16.
   */
 object BuryWebTable {
+  private val TABLE: String = ConfigurationManager.getProperty("actionTableWeb")
   def cleanWebData(filterWeb: RDD[BuryLogin], hc: HiveContext,diffDay:Int): Unit = {
     val map: RDD[Row] = filterWeb.map(line => {
       val all: String = line.line
@@ -50,7 +52,7 @@ object BuryWebTable {
             case "to_scode" =>if (StringUtils.isNotBlank(trimVal)) web.setTo_scode(trimVal)
             case "order_num" =>if (StringUtils.isNotBlank(trimVal)) web.setOrder_num(trimVal)
             case "activity_id" =>if (StringUtils.isNotBlank(trimVal)) web.setActivity_id(trimVal)
-            case _ =>
+            case _ =>println("web-trimKey------"+trimKey)
           }
         }
       }
@@ -82,9 +84,8 @@ object BuryWebTable {
       )
     })
     val createDataFrame: DataFrame = hc.createDataFrame(map, StructUtil.structWeb)
-    createDataFrame.show()
     createDataFrame.registerTempTable("StockShopWeb")
     val timeStr: String = DateScalaUtil.getPreviousDateStr(diffDay,1)
-    hc.sql(s"insert overwrite  table wangyadong.t_web_user_behavior partition(hp_stat_date='${timeStr}') select * from StockShopWeb")
+    hc.sql(s"insert overwrite  table ${TABLE} partition(hp_stat_date='${timeStr}') select * from StockShopWeb")
   }
 }

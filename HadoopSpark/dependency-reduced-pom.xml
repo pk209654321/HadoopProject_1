@@ -65,7 +65,7 @@
     <encoding>UTF-8</encoding>
     <hadoop.version>2.6.0</hadoop.version>
     <maven.compiler.source>1.8</maven.compiler.source>
-    <spark.version>1.6.1</spark.version>
+    <spark.version>1.6.0</spark.version>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>

@@ -3,6 +3,7 @@ package sparkAction
 import java.util.Date
 
 import bean.StockShopClient
+import conf.ConfigurationManager
 import org.apache.commons.lang3.StringUtils
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row, SQLContext}
@@ -15,6 +16,7 @@ import scalaUtil.{DateScalaUtil, StructUtil}
   *
   */
 object BuryClientTable {
+   private val TABLE: String = ConfigurationManager.getProperty("actionTableClient")
   def cleanClientData(filterClient: RDD[BuryLogin],hc: HiveContext,diffDay:Int) ={
     val map: RDD[Row] = filterClient.map(one => {
       val line = one.line
@@ -50,7 +52,7 @@ object BuryClientTable {
             case "to_resourceid" =>if (StringUtils.isNotBlank(trimVal)) client.setTo_resourceid(trimVal)
             case "to_scode" =>if (StringUtils.isNotBlank(trimVal)) client.setTo_scode(trimVal)
             case "target_id" =>if (StringUtils.isNotBlank(trimVal)) client.setTarget_id(trimVal)
-            case _ => println("error:数据异常")
+            case _ => println("client-trimKey------"+trimKey)
           }
         }
       })
@@ -84,10 +86,7 @@ object BuryClientTable {
     createDataFrame.registerTempTable("StockShopClient")
     //val timeStr=DateScalaUtil.date2String(new Date,1)
     val timeStr: String = DateScalaUtil.getPreviousDateStr(diffDay,1)
-    val hql=
-      s"""
-         insert overwrite table wangyadong.t_client_user_behavior partition(hp_stat_date='${timeStr}') select * from StockShopClient
-      """
+    val hql= s"insert overwrite table ${TABLE} partition(hp_stat_date='${timeStr}') select * from StockShopClient"
     hc.sql(hql)
 
   }

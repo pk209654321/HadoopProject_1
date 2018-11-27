@@ -3,6 +3,7 @@ package sparkAction
 import java.util.Date
 
 import bean.{StockShopVisit, StockShopWeb}
+import conf.ConfigurationManager
 import org.apache.commons.lang3.StringUtils
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, DataFrame, Row}
@@ -14,6 +15,7 @@ import scalaUtil.{DateScalaUtil, StructUtil}
   * Created by lenovo on 2018/11/21.
   */
 object BuryVisitTable {
+  private val TABLE: String = ConfigurationManager.getProperty("actionTableVisit")
   def cleanVisitData(filterVisit: RDD[BuryLogin], hc: HiveContext, diffDay:Int): Unit = {
     val map: RDD[Row] = filterVisit.map(line => {
       val all: String = line.line
@@ -45,7 +47,7 @@ object BuryVisitTable {
             case "iccid" => if(StringUtils.isNotBlank(trimVal)) visit.setIccid(trimVal)
             case "meid" => if(StringUtils.isNotBlank(trimVal)) visit.setMeid(trimVal)
             case "idfa" => if(StringUtils.isNotBlank(trimVal)) visit.setIdfa(trimVal)
-            case _ =>
+            case _ =>println("visit-trimKey------"+trimKey)
           }
         }
       }
@@ -74,6 +76,6 @@ object BuryVisitTable {
     createDataFrame.registerTempTable("StockShopVisit")
     val timeStr: String = DateScalaUtil.getPreviousDateStr(diffDay,1)
     createDataFrame
-    hc.sql(s"insert overwrite table wangyadong.t_visit_user_behavior partition(hp_stat_date='${timeStr}') select * from StockShopVisit")
+    hc.sql(s"insert overwrite table ${TABLE} partition(hp_stat_date='${timeStr}') select * from StockShopVisit")
   }
 }
